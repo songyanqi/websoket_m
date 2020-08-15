@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>监听滚动</title>
+</head>
+<style>
+    div{
+        height: 300px;
+        line-height: 300px;
+        margin: 10px 0;
+        text-align: center;
+        background: pink;
+        font-size: 48px;
+    }
+</style>
+<body>
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+    <div>4</div>
+    <div>5</div>
+    <div>6</div>
+    <div>7</div>
+    <div>8</div>
+    <div>9</div>
+    <div>10</div>
+    <div>11</div>
+    <div>12</div>
+    <div>13</div>
+    <div>14</div>
+    <div>15</div>
+    <div>16</div>
+    <div>17</div>
+    <div>18</div>
+    <div>19</div>
+    <div>20</div>
+    <div>21</div>
+    <div>22</div>
+    <div>23</div>
+    <div>24</div>
+    <div>25</div>
+<!-- 首先引入 socket.io 客户端脚本-->
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+ //连接服务端，因为本机使用localhost 所以connect(url)中url可以不填或写 http://localhost
+ var socket = io.connect('http://192.168.1.155:8080');
+ 
+// 监听 scrollTop 事件，用来接收其他客户端滚动的高度
+socket.on("resData",function (data) {
+    window.scrollTo(0,data);
+    console.log(data,'客户端接受到的')
+});
+
+//给服务端发送当前滚动高度 
+window.onscroll = function (){
+    var scrollData = document.documentElement.scrollTop || document.body.scrollTop;
+    console.log(scrollData,'滚动高度');
+    socket.emit("sendScrollTop",scrollData);
+}
+//  var content=document.getElementById("content");
+//  var sendMsg=document.getElementById("sendMsg");
+//  var btn_send=document.getElementById("btn_send");
+//  btn_send.addEventListener("click",function () {
+//         var data={client:"客户端1",msg:sendMsg.value};
+ //给服务端发送 sendMsg事件名的消息
+//  socket.emit("sendMsg",data);
+//  content.value+=data.client+":"+data.msg+"\r\n";
+//  sendMsg.value="";
+//  });
+
+</script>
+
+</body>
+</html>
